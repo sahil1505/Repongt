@@ -290,3 +290,138 @@ Enter countdown time in seconds: <input type="number" id="countdownInput"><br><b
 </html>
 
 
+#######################################
+https://repo1.maven.org/maven2/org/mongodb/mongodb-driver-sync/5.0.0/  
+
+https://repo1.maven.org/maven2/org/mongodb/mongodb-driver-core/5.0.0/mongodb-driver-core-5.0.0.jar  
+
+https://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.7.32/slf4j-api-1.7.32.jar
+
+https://repo1.maven.org/maven2/org/slf4j/slf4j-simple/1.7.32/slf4j-simple-1.7.32.jar
+
+https://mvnrepository.com/artifact/org.mongodb/bson/5.0.0
+
+
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package mongo;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
+
+/**
+ *
+ * @author LAB1-PC27
+ */
+public class JavaApplication5 {
+/**
+* @param args the command line arguments
+*/
+public static void main(String[] args) {
+// TODO code application logic here
+String u="mongodb://localhost:27017/";
+MongoClient mongoclient = MongoClients.create(u);
+MongoDatabase database = mongoclient.getDatabase("admin");
+System.out.println("Connected to MongoDB!!");
+MongoIterable<String> databaseNames = mongoclient.listDatabaseNames();
+for (String dbName:databaseNames){
+System.out.println("Database Name:"+dbName);
+}
+mongoclient.close();
+}
+}
+
+#######################################
+1). Inserting and Retrieving
+
+Source Code:
+
+import pymongo
+myclient=pymongo.MongoClient("mongodb://localhost:27017")
+mydb = myclient['mydatabase']
+print(myclient.list_database_names())
+
+#getting database instance
+
+db = myclient['mydatabase']
+
+#create collection
+
+coll = db['data']
+
+#insert documents into collection
+
+data = [{"_id":"1", "name":"Aditya", "age":"24", "city":"Mumbai"},
+        {"_id":"2", "name":"Sam", "age":"23", "city":"Pune"},
+        {"_id":"3", "name":"Pratham", "age":"25", "city":"Delhi"}]
+
+res = coll.insert_many(data)
+print("Data inserted...")
+print(res.inserted_ids)
+print("First record of the collection:")
+print(coll.find_one())
+print("Record whose ID is 3:")
+print(coll.find_one({"_id":"3"}))
+
+------------------------------------
+2) Update Many
+
+Source Code:
+from pymongo import MongoClient
+client=MongoClient('localhost', 27017)
+db = client['myBase']
+coll = db['MYExample4']
+data = [{"_id": "401", "name": "Ram", "age": "26", "city": "hyderabad"},
+{"_id": "402", "name": "Rahim", "age": "27", "city": "bangalore"},
+{"_id": "403", "name": "Robert", "age": "28", "city": "mumbai"}]
+
+#Insert data
+res = coll.insert_many(data)
+print("Data inserted..")
+print("Documents in the collection:")
+
+# Print documents before update
+for doc1 in coll.find():
+    print(doc1)
+
+# Update document with_id "41"
+coll.update_many({}, {"$set": {"city": "vishakapatanam"}})
+print("Documents in the collection after update operation:")
+#Print documents after update
+
+for doc2 in coll.find():
+    print(doc2)
+
+----------------------------------
+
+3) Delete
+
+a). Delete one
+
+Source Code:
+
+from pymongo import MongoClient
+
+client=MongoClient('localhost', 27017)
+db = client['myBaseD']
+coll = db['MYExample1']
+
+data = [{"_id": "401", "name": "Ram", "age": "26", "city": "hyderabad"},
+{"id": "402", "name": "Rahim", "age": "27", "city": "bangalore"},
+{"_id": "403", "name": "Robert", "age": "28", "city": "mumbai"}]
+
+#Insert data
+res = coll.insert_many(data)
+print("Data inserted..")
+print(res.inserted_ids)
+
+coll.delete_one({"_id":"401"})
+
+print("documents in the collection after update operation:")
+for doc2 in coll.find():
+    print(doc2)
